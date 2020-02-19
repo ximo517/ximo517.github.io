@@ -327,10 +327,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-02-17 16:55:56 / 修改时间：18:15:37" itemprop="dateCreated datePublished" datetime="2020-02-17T16:55:56+08:00">2020-02-17</time>
+              <time title="创建时间：2020-02-17 16:55:56" itemprop="dateCreated datePublished" datetime="2020-02-17T16:55:56+08:00">2020-02-17</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-19 17:00:13" itemprop="dateModified" datetime="2020-02-19T17:00:13+08:00">2020-02-19</time>
+              </span>
 
           
 
@@ -343,42 +349,41 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-JDK的下载与安装"><a href="#1-JDK的下载与安装" class="headerlink" title="1.JDK的下载与安装"></a>1.JDK的下载与安装</h3><ul>
+          <h3 id="JDK的下载与安装"><a href="#JDK的下载与安装" class="headerlink" title="JDK的下载与安装"></a>JDK的下载与安装</h3><ul>
 <li><p>jdk8 x64下载地址<br><a href="https://pan.baidu.com/s/1a_wScAOFd_rDuk2yD9m46A" target="_blank" rel="noopener">链接</a><br>提取码: 25th</p>
 </li>
-<li><p>jdk的安装<br>下载完成后双击jdk-8u161-windows-x64.exe，点击“下一步”<br><img src="https://service-kn8gfo8w-1300508573.ap-hongkong.apigateway.myqcloud.com/release/dfs13a/%E5%9B%BE%E7%89%87/jdk1.jpg" alt="jdk1"><br>点击”更改”，选择要安装的目录<br><img src="https://service-kn8gfo8w-1300508573.ap-hongkong.apigateway.myqcloud.com/release/dfs13a/%E5%9B%BE%E7%89%87/jdk2.jpg" alt="jdk2"><br>更改完成后点击“下一步”<br><img src="https://service-kn8gfo8w-1300508573.ap-hongkong.apigateway.myqcloud.com/release/dfs13a/%E5%9B%BE%E7%89%87/jdk4.jpg" alt="jdk4"><br>正在安装</p>
+<li><p>jdk的安装<br>下载完成后双击jdk-8u161-windows-x64.exe，点击“下一步”<br><img src="https://service-kn8gfo8w-1300508573.ap-hongkong.apigateway.myqcloud.com/release/dfs13a/%E5%9B%BE%E7%89%87/jdk1.jpg" alt="jdk1"><br>点击”更改”，选择要安装的目录<br><img src="https://service-kn8gfo8w-1300508573.ap-hongkong.apigateway.myqcloud.com/release/dfs13a/%E5%9B%BE%E7%89%87/jdk2.jpg" alt="jdk2"><br>更改完成后点击“下一步”<br><img src="https://service-kn8gfo8w-1300508573.ap-hongkong.apigateway.myqcloud.com/release/dfs13a/%E5%9B%BE%E7%89%87/jdk4.jpg" alt="jdk4"><br>正在安装<br><img src="https://service-kn8gfo8w-1300508573.ap-hongkong.apigateway.myqcloud.com/release/dfs13a/%E5%9B%BE%E7%89%87/jdk5.png" alt="jdk5"></p>
 </li>
-<li><p>安装完成后选择jre的安装目录，点击“下一步”</p>
+<li><p>安装完成后选择jre的安装目录<br><img src="https://service-kn8gfo8w-1300508573.ap-hongkong.apigateway.myqcloud.com/release/dfs13a/%E5%9B%BE%E7%89%87/jre1.png" alt="jre1"></p>
 </li>
-<li><p>安装完成，点击“关闭”</p>
+<li><p>选择完成后，点击“下一步”<br><img src="https://service-kn8gfo8w-1300508573.ap-hongkong.apigateway.myqcloud.com/release/dfs13a/%E5%9B%BE%E7%89%87/jre2.png" alt="jre2"></p>
 </li>
-</ul>
-<h3 id="2-JDK环境变量配置"><a href="#2-JDK环境变量配置" class="headerlink" title="2.JDK环境变量配置"></a>2.JDK环境变量配置</h3><ul>
-<li><p>新建 JAVA_HOME 环境变量,JAVA_HOME=C:\Java\jdk1.8.0_144</p>
+<li><p>正在安装<br><img src="https://service-kn8gfo8w-1300508573.ap-hongkong.apigateway.myqcloud.com/release/dfs13a/%E5%9B%BE%E7%89%87/jre3.png" alt="jre3"></p>
 </li>
-<li><p>修改 path 环境变量，在path变量尾部添加%JAVA_HOME%\bin</p>
+<li><p>安装完成，点击“关闭”<br><img src="https://service-kn8gfo8w-1300508573.ap-hongkong.apigateway.myqcloud.com/release/dfs13a/%E5%9B%BE%E7%89%87/jre4.png" alt="jre4"></p>
+<h3 id="JDK环境变量配置"><a href="#JDK环境变量配置" class="headerlink" title="JDK环境变量配置"></a>JDK环境变量配置</h3></li>
+<li><p>新建JAVA_HOME环境变量,JAVA_HOME=C:\Java\jdk1.8.0_144</p>
 </li>
-<li><p>新建 classpath 环境变量,classpath=.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\tools.jar<br>（说明：jdk1.5之前需要配置3个环境变量，jdk1.5之后可以不用配置classpath）</p>
+<li><p>修改path环境变量,在path变量尾部添加%JAVA_HOME%\bin</p>
 </li>
-<li><p>计算机”-&gt;右键  –&gt;属性   –&gt;进入”高级系统设置”  窗口—&gt;进入”环境变量”窗口</p>
+<li><p>新建classpath环境变量,classpath=.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\tools.jar<br>（说明：jdk1.5之前需要配置3个环境变量，jdk1.5之后可以不用配置classpath）</p>
+</li>
+<li><p>计算机”-&gt;右键  –&gt;属性   –&gt;进入”高级系统设置”  窗口—&gt;进入”环境变量”窗口<br><img src="https://service-kn8gfo8w-1300508573.ap-hongkong.apigateway.myqcloud.com/release/dfs13a/%E5%9B%BE%E7%89%87/p1.png" alt="p1"><br><img src="" alt=""><br><img src="" alt=""><br><img src="" alt=""><br><img src="" alt=""></p>
 </li>
 <li><p>在“系统环境变量”窗口，点击“新建”–&gt;打开“新建系统环境变量”窗口</p>
 </li>
-<li><p>变量名为”JAVA_HOME”,变量值为jdk安装目录，如“D:\Program Files\Java\jdk”，点击“确定”</p>
+<li><p>变量名为”JAVA_HOME”,变量值为jdk安装目录，如”D:\Program Files\Java\jdk”,点击”确定”</p>
 </li>
-<li><p>然后找到path变量，点击“编辑”，加上“%JAVA_HOME%\bin”,点击“确定”</p>
+<li><p>然后找到path变量，点击”编辑”,加上”%JAVA_HOME%\bin”,点击”确定”</p>
 </li>
-<li><p>新建 classpath 变量，设置 classpath=.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\tools.jar 点击“确定”，完成环境变量设置</p>
-<h3 id="3-验证环境变量是否配置成功"><a href="#3-验证环境变量是否配置成功" class="headerlink" title="3.验证环境变量是否配置成功"></a>3.验证环境变量是否配置成功</h3><p>win+R打开运行，输入CMD打打命令提示符窗口<br>分别输入java，javac，java -version指令查看是否可看到JDK的编译器信息；</p>
-<h3 id="4-验证是否正常工作"><a href="#4-验证是否正常工作" class="headerlink" title="4.验证是否正常工作"></a>4.验证是否正常工作</h3><p>在磁盘上创建一个Helloworld文件夹，用记事本编写一个“Helloworld”小程序来验证，保存为Helloworld.java，</p>
-</li>
-</ul>
-<p>　　public class Helloworld{</p>
-<p>　　　　public static void main(String[] args) { </p>
-<p>　　　　System.out.println(“Hello Helloworld”);<br>　　　　}<br>　　}</p>
+<li><p>新建 classpath 变量,设置classpath=.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\tools.jar 点击”确定”,完成环境变量设置</p>
+<h3 id="验证环境变量是否配置成功"><a href="#验证环境变量是否配置成功" class="headerlink" title="验证环境变量是否配置成功"></a>验证环境变量是否配置成功</h3><p>win+R打开运行,输入CMD打打命令提示符窗口<br>分别输入java,javac,java -version指令查看是否可看到JDK的编译器信息；</p>
+<h3 id="验证是否正常工作"><a href="#验证是否正常工作" class="headerlink" title="验证是否正常工作"></a>验证是否正常工作</h3><p>在磁盘上创建一个Helloworld文件夹，用记事本编写一个“Helloworld”小程序来验证，保存为Helloworld.java，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Helloworld</span></span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123; </span><br><span class="line">   System.out.println(<span class="string">"Hello Helloworld"</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>　　先输入javac Helloworld.java进行编译，得到Helloworld.class,再输入java Helloworld运行。</p>
-<ul>
-<li>安装结束</li>
+</li>
+<li><p>安装结束</p>
+</li>
 </ul>
 
       
