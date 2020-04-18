@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ximo517.github.io","root":"/","scheme":"Muse","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="tags: MySQL 视图 也是一种数据库对象，它是基于表的，并且与表共享存储空间。 可以把视图想像成表的“窗户”, 我们在操作视图时，方法与表是一样的，同样可以做 CRUD 操作，需要注意的时，我们对视图进行CUD操作时，会影响所在表的数据。  123456-- 语法：CREATE [OR REPLACE] [ALGORITHM &#x3D; &amp;#123;UNDIFINED | MERGE | TEMP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql-day4">
+<meta property="og:url" content="http://ximo517.github.io/2020/04/18/mysql-day4/index.html">
+<meta property="og:site_name" content="惜嘘嘻唔呼哈">
+<meta property="og:description" content="tags: MySQL 视图 也是一种数据库对象，它是基于表的，并且与表共享存储空间。 可以把视图想像成表的“窗户”, 我们在操作视图时，方法与表是一样的，同样可以做 CRUD 操作，需要注意的时，我们对视图进行CUD操作时，会影响所在表的数据。  123456-- 语法：CREATE [OR REPLACE] [ALGORITHM &#x3D; &amp;#123;UNDIFINED | MERGE | TEMP">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-18T04:51:30.235Z">
+<meta property="article:modified_time" content="2020-04-18T04:53:59.736Z">
+<meta property="article:author" content="惜末">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://ximo517.github.io/2020/04/18/mysql-day4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>mysql-day4 | 惜嘘嘻唔呼哈</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">惜嘘嘻唔呼哈</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right"></div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ximo517.github.io/2020/04/18/mysql-day4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="惜末">
+      <meta itemprop="description" content="个人博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="惜嘘嘻唔呼哈">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mysql-day4
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-18 12:51:30 / 修改时间：12:53:59" itemprop="dateCreated datePublished" datetime="2020-04-18T12:51:30+08:00">2020-04-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>tags: MySQL</p>
+<h1 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h1><blockquote>
+<p>也是一种数据库对象，它是基于表的，并且与表共享存储空间。</p>
+<p>可以把视图想像成表的<strong>“窗户”</strong>, 我们在操作视图时，方法与表是一样的，同样可以做 CRUD 操作，需要注意的时，我们对视图进行CUD操作时，会影响所在表的数据。</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 语法：</span></span><br><span class="line"><span class="keyword">CREATE</span> [<span class="keyword">OR</span> <span class="keyword">REPLACE</span>] [ALGORITHM = &#123;UNDIFINED | <span class="keyword">MERGE</span> | TEMPTABLE&#125;] </span><br><span class="line"><span class="keyword">VIEW</span> view_name[(column_list)]</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line">	select_statement</span><br><span class="line">[<span class="keyword">WITH</span> [<span class="keyword">CASCADE</span> | <span class="keyword">LOCAL</span>] <span class="keyword">CHECK</span> <span class="keyword">OPTION</span>]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>备注：</p>
+<p>使用是某个普通用户，则需要授予：CREATE VIEW 和 DROP VIEW权限</p>
+<p>ALGORITHM 指定系统采用何种算法来创建视图，默认是 UNDEFINED, 表示由系统自动选择</p>
+<p>WITH [CASCADE | LOCAL] CHECK OPTION , 默认是 CASCADE</p>
+<p>表示在对视图进行CUD操作时，是否要遵守原来创建此视图时的SELECT语句的约束以及原表中的约束。</p>
+</blockquote>
+<p><strong>案例：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">or</span> <span class="keyword">replace</span> <span class="keyword">view</span> emp_view_1</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">	<span class="keyword">select</span> deptno,ename,sal,job <span class="keyword">from</span> emp <span class="keyword">where</span> deptno = <span class="number">20</span></span><br><span class="line"><span class="keyword">with</span> <span class="keyword">check</span> <span class="keyword">option</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询视图</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> emp_view_1 <span class="keyword">where</span> sal &gt; <span class="number">1500</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用子查询 [子查询本质上就是 视图，是一个没有名字的视图]</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> </span><br><span class="line">(</span><br><span class="line">	<span class="keyword">select</span> ename,sal,job <span class="keyword">from</span> emp <span class="keyword">where</span> deptno = <span class="number">20</span></span><br><span class="line">) emp_view_1</span><br><span class="line"><span class="keyword">where</span> sal &gt; <span class="number">1500</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> emp_view_2</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">	<span class="keyword">select</span> deptno,ename,sal,job <span class="keyword">from</span> emp <span class="keyword">where</span> deptno = <span class="number">20</span></span><br><span class="line"><span class="keyword">with</span> <span class="keyword">check</span> <span class="keyword">option</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="给用户授予-创建视图的权限"><a href="#给用户授予-创建视图的权限" class="headerlink" title="给用户授予 创建视图的权限"></a>给用户授予 创建视图的权限</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">create</span> <span class="keyword">view</span> <span class="keyword">on</span> demo.* <span class="keyword">to</span> <span class="string">'jack'</span>@<span class="string">'localhost'</span>;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">drop</span> <span class="keyword">on</span> demo.* <span class="keyword">to</span> jack;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">show</span> <span class="keyword">view</span> <span class="keyword">on</span> demo.* <span class="keyword">to</span> <span class="string">'jack'</span>@<span class="string">'localhost'</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="视图的分类"><a href="#视图的分类" class="headerlink" title="视图的分类"></a>视图的分类</h3><ol>
+<li><p>简单视图</p>
+<blockquote>
+<p>视图的数据来源于一张表，并且创建视图的查询语句中没有使用表达式、函数。</p>
+<p>简单视图可以做CUD操作【具体还要视情况而定】。</p>
+</blockquote>
+</li>
+<li><p>复杂视图</p>
+<blockquote>
+<p>视图来源于多张表的联合查询，并且创建视图的查询语句中可以使用表达式、函数（含组函数）。</p>
+<p>复杂视图大多数情况下都不能做 CUD 操作。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="视图操作"><a href="#视图操作" class="headerlink" title="视图操作"></a>视图操作</h3><ol>
+<li>用户要有创建视图的权限  [CREATE VIEW]</li>
+<li>如果要删除视图，额外要授予 删除视图 的权限 [?]</li>
+<li>管理者应该创建多种不同的视图，并分配不同的权限给予不同的用户，以便他们可以自动管理指定的视图。</li>
+</ol>
+<blockquote>
+<p>所以，我们使用视图，一般都是要与权限管理配合使用。</p>
+</blockquote>
+<h2 id="E-R-图"><a href="#E-R-图" class="headerlink" title="E-R 图"></a>E-R 图</h2><blockquote>
+<p>E-R 图的全称： Entity Relationship Diagram, 实体关系图</p>
+<p>在JAVA的模型中，叫实体类图</p>
+<p>在数据库模型中，叫关系图</p>
+<p>所以，通过ER图，可以清晰地看到 实体类之间的关系，以及表之间的关系。</p>
+<p>我们昨天讲过，实体类之间的多样式关系有：</p>
+<p>一对一</p>
+<p>一对多</p>
+<p>多对多</p>
+<p>这三种多样式关系，在RDBMS中，都是以 外键来表示的。</p>
+<p>我们利用工具可以把已有的表结构生成E-R 图，也可以手动绘制好E-R图后，再重新生成表结构。</p>
+</blockquote>
+<h3 id="JAVA-实体类与表结构-与-ER-图"><a href="#JAVA-实体类与表结构-与-ER-图" class="headerlink" title="JAVA 实体类与表结构 与 ER 图"></a>JAVA 实体类与表结构 与 ER 图</h3><h2 id="数据库事务"><a href="#数据库事务" class="headerlink" title="数据库事务"></a>数据库事务</h2><blockquote>
+<p>在MYSQL中，事务默认情况下是自动提交的[auto commit]. 也就是说，我们每执行一条命令，事务就自动提交一次。</p>
+</blockquote>
+<h3 id="事务的定义"><a href="#事务的定义" class="headerlink" title="事务的定义"></a>事务的定义</h3><blockquote>
+<p>一组相关的SQL操作， 也就是说事务的边界由业务来决定。</p>
+</blockquote>
+<h3 id="事务的开始和结束"><a href="#事务的开始和结束" class="headerlink" title="事务的开始和结束"></a>事务的开始和结束</h3><blockquote>
+<p>在MYSQL中，每操作一次，都意味着一次的事务开始和结束。除非我们自己指定 边界：</p>
+<p>调用 <strong>begin</strong> 命令 或 <strong>start transaction</strong> 命令 来显示地表明 我开始事务了。</p>
+<p>调用 <strong>commit</strong> 命令 或 <strong>rollback</strong> 命令 来显示地表明，这个事务结束了.</p>
+<p>commit 表示提交事务，也就是把此事务中内存的数据状态同步到底层磁盘中。</p>
+<p>rollback 表示回滚事务，也就是把上事务中内存的数据状态 消取，回到事务开始前的状态。</p>
+</blockquote>
+<h3 id="事务的特性"><a href="#事务的特性" class="headerlink" title="事务的特性"></a>事务的特性</h3><blockquote>
+<p>四大特性 【ACID】</p>
+<ol>
+<li><p>原子性 Atomicity</p>
+<blockquote>
+<p>处在同一个事务的操作不可分割。要么一起成功，要么一起失败。</p>
+</blockquote>
+</li>
+<li><p>一致性 Consistency</p>
+<blockquote>
+<p>事务结束后，内存中的数据状态与底层磁盘中的数据状态保持一致。</p>
+</blockquote>
+</li>
+<li><p>隔离性 Isolation</p>
+<blockquote>
+<p>多个事务之间互相隔离</p>
+<p>所以，当多个事务同时去对同一个数据库对象【表】进行操作时，就会造成并发。此时，数据库提供了“锁”机制来做并发处理。</p>
+<p>针对这个锁而言，在mysql数据库中，INNODB 引擎即支持表级锁，也支持行级锁。而MYISAM引擎只支持表级锁。</p>
+</blockquote>
+</li>
+<li><p>持久性 Durability</p>
+<blockquote>
+<p>事务一旦正确提交，则RDBMS要保证数据不再丢失。</p>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+<h3 id="事务并发"><a href="#事务并发" class="headerlink" title="事务并发"></a>事务并发</h3><blockquote>
+<p>当多个事务同时去对同一个数据库对象【表】进行操作时，就会造成并发</p>
+<p>MYSQL 采用锁机制来解决事务并发问题，而MYSQL的INNODB引擎支持两个级别的锁，分别是：</p>
+<ol>
+<li><p>表级锁， 粒度较大，性能开销较小，但是并发性低</p>
+<p>语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">LOCK</span> <span class="keyword">TABLE</span> table_name <span class="keyword">READ</span> | WRITE   <span class="comment">-- 显示调用</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>行级锁， 粒度较小，性能开销较大， 但是并发性能高， 行级锁是自动申请的，其中，我们执行DML操作都，RDBMS都会自动为当前事务分配行级排它锁。</p>
+<p> 一个表只有1个表级锁，它的每一行记录都有1把行级锁。</p>
+</li>
+</ol>
+</blockquote>
+<h3 id="事务操作"><a href="#事务操作" class="headerlink" title="事务操作"></a>事务操作</h3><ol>
+<li><p>手动开始事务</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">begin</span></span><br><span class="line"><span class="comment">-- 或</span></span><br><span class="line"><span class="keyword">start</span> <span class="keyword">transaction</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调用你的SQL命令</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> ...</span><br><span class="line"><span class="keyword">update</span> ...</span><br><span class="line"><span class="keyword">delete</span> ...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>结束事务</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 提交事务</span></span><br><span class="line"><span class="keyword">commit</span>;</span><br><span class="line"><span class="comment">-- 回滚事务</span></span><br><span class="line"> <span class="keyword">rollback</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<h3 id="事务的隔离级别"><a href="#事务的隔离级别" class="headerlink" title="事务的隔离级别"></a>事务的隔离级别</h3><blockquote>
+<p>在mysql中，采用INNODB存储引擎时，默认的事务隔离级别是 READ_COMMITTED</p>
+</blockquote>
+<ol>
+<li><p>READ UNCOMMITTED   可以读取没有提交的事务中的数据，也就是允许脏读[dirty read]</p>
+</li>
+<li><p>READ COMMITTED 可以读取已提交的事务中的数据。 不允许脏读</p>
+</li>
+<li><p>REPEATABLE READ   不可重复读，在同一个事务中，连续执行2次相同的SELECT命令，读到的列值不一样。</p>
+<blockquote>
+<p>因为查询语句默认情况下是不申请行级排它锁的，所以，在T1事务的2次执行SELECT命令的间隔之中，T2事务可以去执行更新命令，并且提交事务。</p>
+<p>所以，才会造成 不可重复读的现象。</p>
+</blockquote>
+</li>
+<li><p>Serializable 串行化，不可幻读， 在同一个事务中，连续执行的2次SELECT count(*) 命令，得到的结果不一样。</p>
+<blockquote>
+<p>幻读, 是指在T1事务的2次执行SELECT命令的间隔之中，T2事务可以去执行 INSERT 命令，并且提交事务。</p>
+<p>所以，才会造成 幻读。</p>
+</blockquote>
+</li>
+</ol>
+<p>所以，如果把事务的隔离级别调整到 Serializable，那么可以防止 幻读、不可重复读、脏读。 但是，并发性是最低的。</p>
+<p>事务隔离级设为 REPEATABLE READ ， 可以防止 不可重复读、脏读，但是可以 幻读</p>
+<p>事务隔离级别设为 READ COMMITTED, 可以防止 脏读，不能防止 不可重复读和幻读</p>
+<p>事务隔离级别设为 READ UNCOMMITED, 允许脏读、 不可重复读和幻读</p>
+<h3 id="不可重复读和幻读-是如何加锁的"><a href="#不可重复读和幻读-是如何加锁的" class="headerlink" title="不可重复读和幻读 是如何加锁的"></a>不可重复读和幻读 是如何加锁的</h3><p>不可重复读 就是针对 SELECT 语句进行加锁，通过 FOR UPDATE 子句。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t_student <span class="keyword">FOR</span> <span class="keyword">UPDATE</span> [<span class="keyword">nowait</span>];</span><br></pre></td></tr></table></figure>
+
+<p>幻读 是通过锁表实现的，如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">LOCK</span> <span class="keyword">TABLE</span> table_name <span class="keyword">READ</span> | WRITE;</span><br><span class="line"><span class="comment">-- 备注：</span></span><br><span class="line"><span class="comment">-- 在 READ 模式下，其它事务可以做 SELECT 操作</span></span><br><span class="line"><span class="comment">-- 在 WRITE 模式下，其它事务不能做任何操作，完全的串行化。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 释放锁</span></span><br><span class="line"><span class="keyword">UNLOCK</span> <span class="keyword">TABLES</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="查看和设置当前会话的事务隔离级别"><a href="#查看和设置当前会话的事务隔离级别" class="headerlink" title="查看和设置当前会话的事务隔离级别"></a>查看和设置当前会话的事务隔离级别</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--  查看</span></span><br><span class="line"><span class="keyword">select</span> @@transaction_isolation</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 设置 </span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">session</span> <span class="keyword">transaction</span> <span class="keyword">isolation</span> <span class="keyword">level</span> 级别</span><br><span class="line">级别有如下四种：</span><br><span class="line"><span class="keyword">read</span> uncommitted</span><br><span class="line"><span class="keyword">read</span> committed</span><br><span class="line">repeatable <span class="keyword">read</span></span><br><span class="line"><span class="keyword">serializable</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="索引-index"><a href="#索引-index" class="headerlink" title="索引 [index]"></a>索引 [index]</h2><blockquote>
+<p>是数据库在查询时的一种优化、提高查询效率的一种方式。</p>
+<p>它本身也是数据库对象，有独立的存储空间和命名空间。默认情况下，索引采用BTREE结果来存储。</p>
+</blockquote>
+<h3 id="索引创建的方式"><a href="#索引创建的方式" class="headerlink" title="索引创建的方式"></a>索引创建的方式</h3><ol>
+<li><p>自动创建</p>
+<blockquote>
+<p>当我们给表中的列添加了 主键约束或唯 一性约束时，RDMBS会自动帮我们创建唯一性索引。</p>
+<p>注：只有当我们的查询条件是创建了索引的列时，RDBMS才会帮助我们使用索引进行查询。</p>
+</blockquote>
+</li>
+<li><p>手动创建</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 语法</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">INDEX</span> index_name <span class="keyword">ON</span> table_name(column_name[,column_name]) [<span class="keyword">visible</span>]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="何时该创建-索引？"><a href="#何时该创建-索引？" class="headerlink" title="何时该创建 索引？"></a>何时该创建 索引？</h3><ol>
+<li>列中的NULL太多时，不适合创建索引</li>
+<li>列中的值重复率高时，不适合创建索引</li>
+<li>列经常做更新时，不适合创建索引</li>
+</ol>
+<p>所以，与上面情况相反的情况，就比较适合建索引。</p>
+<h3 id="有了索引后，RDBMS是如何做查询的？"><a href="#有了索引后，RDBMS是如何做查询的？" class="headerlink" title="有了索引后，RDBMS是如何做查询的？"></a>有了索引后，RDBMS是如何做查询的？</h3><ol>
+<li>RDBMS会自动判断出你的查询条件列是否加了索引</li>
+<li>首先，去查询索引，找到“行记录的物理位置”</li>
+<li>其次，再根据“行记录的物置位置”去表中定位记录。</li>
+<li>最后，把记录返回给结果集</li>
+</ol>
+<h3 id="索引失效"><a href="#索引失效" class="headerlink" title="索引失效"></a>索引失效</h3>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/18/mysql-day1/" rel="prev" title="mysql-day1">
+      <i class="fa fa-chevron-left"></i> mysql-day1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/18/MySQL%E5%9F%BA%E7%A1%80/" rel="next" title="MySQL基础">
+      MySQL基础 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#视图"><span class="nav-number">1.</span> <span class="nav-text">视图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#给用户授予-创建视图的权限"><span class="nav-number">1.1.</span> <span class="nav-text">给用户授予 创建视图的权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#视图的分类"><span class="nav-number">1.1.1.</span> <span class="nav-text">视图的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图操作"><span class="nav-number">1.1.2.</span> <span class="nav-text">视图操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#E-R-图"><span class="nav-number">1.2.</span> <span class="nav-text">E-R 图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JAVA-实体类与表结构-与-ER-图"><span class="nav-number">1.2.1.</span> <span class="nav-text">JAVA 实体类与表结构 与 ER 图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库事务"><span class="nav-number">1.3.</span> <span class="nav-text">数据库事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#事务的定义"><span class="nav-number">1.3.1.</span> <span class="nav-text">事务的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务的开始和结束"><span class="nav-number">1.3.2.</span> <span class="nav-text">事务的开始和结束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务的特性"><span class="nav-number">1.3.3.</span> <span class="nav-text">事务的特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务并发"><span class="nav-number">1.3.4.</span> <span class="nav-text">事务并发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务操作"><span class="nav-number">1.3.5.</span> <span class="nav-text">事务操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务的隔离级别"><span class="nav-number">1.3.6.</span> <span class="nav-text">事务的隔离级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不可重复读和幻读-是如何加锁的"><span class="nav-number">1.3.7.</span> <span class="nav-text">不可重复读和幻读 是如何加锁的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看和设置当前会话的事务隔离级别"><span class="nav-number">1.3.8.</span> <span class="nav-text">查看和设置当前会话的事务隔离级别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引-index"><span class="nav-number">1.4.</span> <span class="nav-text">索引 [index]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#索引创建的方式"><span class="nav-number">1.4.1.</span> <span class="nav-text">索引创建的方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#何时该创建-索引？"><span class="nav-number">1.4.2.</span> <span class="nav-text">何时该创建 索引？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有了索引后，RDBMS是如何做查询的？"><span class="nav-number">1.4.3.</span> <span class="nav-text">有了索引后，RDBMS是如何做查询的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引失效"><span class="nav-number">1.4.4.</span> <span class="nav-text">索引失效</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">惜末</p>
+  <div class="site-description" itemprop="description">个人博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">惜末</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
